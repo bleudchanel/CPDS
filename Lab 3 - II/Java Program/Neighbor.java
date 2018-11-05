@@ -17,7 +17,7 @@ public class Neighbor extends Thread {
 
 			Thread.sleep((int)(200 * Math.random()));
 			
-			while ( (flag.query_flag(name) == false) && turn.is_my_turn(name)) {
+			while ( (flag.query_flag(name) == true) && turn.is_my_turn(name)==false) {
 				System.out.println(name + " waits");
 				Thread.sleep(200);
 			}
