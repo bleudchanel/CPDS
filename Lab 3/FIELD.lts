@@ -1,3 +1,17 @@
+/* Homework: Safety & Progres (I)
+ *
+ *
+ * Name: Carlos
+ * Surname: Rojas Morales
+ *
+ * Name: Wilmer
+ * Surname: Uruchi
+ * 
+ *
+ */
+
+/* The Warring Neighbors */
+
 const False = 0
 const True = 1
 range Bool = False..True
@@ -44,6 +58,10 @@ progress ENTER1 = {n1.enter}
 progress ENTER2 = {n2.enter}
 property MUTEX2 = (n1.enter->n1.exit->MUTEX2|n2.enter->n2.exit->MUTEX2).
 ||FIELD = (n1:NEIGHBOR1 ||n2:NEIGHBOR2 || {n1,n2}::FLAGS ||MUTEX2)<<{n1.flag1,n2.flag2}.
+
+/* - It is possible that the neighbors act in a greedy way blocking the access to each other because,
+	 the protocol allows to reach the flag again without waiting enough time in order to anyone of the two enter to the 
+	 field, causing a no progress deadlock. */
 
 
 
