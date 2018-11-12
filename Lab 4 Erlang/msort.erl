@@ -6,16 +6,23 @@ sep([H|T], N) -> {Lleft, Lright} = sep(T, N-1), {[H | Lleft], Lright}.
 
 % merge(L1,L2) -> lists:sort(L1 ++ L2).
 
-merge(L1,L2) 				-> merge(reverse(L1),reverse(L2),[]).
-merge([H1|T1],[H2|T2],L3) 	when H1 > H2 -> merge(T1,[H2|T2],[H1|L3]);
-merge([H1|T1],[H2|T2],L3) 	-> merge([H1|T1], T2, [H2|L3]);
-merge([],[H2|T2],L3) 		-> merge([], T2, [H2|L3]);
-merge([H1|T1],[],L3) 		-> merge(T1,[],[H1|L3]);
-merge([],[],L3)				-> L3.
+% merge(L1,L2) 				-> merge(reverse(L1),reverse(L2),[]).
+% merge([H1|T1],[H2|T2],L3) 	when H1 > H2 -> merge(T1,[H2|T2],[H1|L3]);
+% merge([H1|T1],[H2|T2],L3) 	-> merge([H1|T1], T2, [H2|L3]);
+% merge([],[H2|T2],L3) 		-> merge([], T2, [H2|L3]);
+% merge([H1|T1],[],L3) 		-> merge(T1,[],[H1|L3]);
+% merge([],[],L3)				-> L3.
 
-reverse(L) 			->  reverse(L,[]).
-reverse([H|T],L)	-> 	reverse(T,[H|L]);
-reverse([],L) 		->	L.
+% reverse(L) 			->  reverse(L,[]).
+% reverse([H|T],L)	-> 	reverse(T,[H|L]);
+% reverse([],L) 		->	L.
+
+
+merge([H1|T1],[H2|T2]) 	when H1 =< H2 -> [H1|merge(T1,[H2|T2])];
+merge([H1|T1],[H2|T2])	-> [H2|merge([H1|T1],T2)];
+merge([],[H2|T2]) 	 	-> [H2|merge([],T2)];
+merge([H1|T1],[]) 	 	-> [H1|merge(T1,[])];
+merge([],[])			-> [].
 
 
 ms([]) -> [];
