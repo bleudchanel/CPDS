@@ -1,3 +1,18 @@
+% Homework: Basics on Erlang
+% 
+% 
+% 
+% Name: Wilmer
+% Surname: Uruchi
+% 
+% Name: Carlos
+% Surname: Rojas Morales
+% 
+% 
+%
+% Ping Pong
+%
+
 -module(pingpong).
 -export([start/0, ping/2, pong/0]).
 

@@ -1,3 +1,17 @@
+% Homework: Basics on Erlang
+% 
+% 
+% 
+% Name: Wilmer
+% Surname: Uruchi
+% 
+% Name: Carlos
+% Surname: Rojas Morales
+% 
+% 
+%
+% Mergesort
+%
 -module(msort).
 -compile(export_all).
 
@@ -36,15 +50,17 @@ rcvp(Pid) ->
 	end.
 
 pms(L) -> 
-	Pid = spawn(mergesort, p_ms, [self(), L]),
+	Pid = spawn(msort, p_ms, [self(), L]),
 	rcvp(Pid).
 
 p_ms(Pid, L) 
 	when length(L) < 100 -> Pid ! {self(), ms(L)};
 
 p_ms(Pid, L) -> {Lleft, Lright} = sep(L, length(L) div 2),
-	Pid1 = spawn(mergesort, p_ms, [self(), Lleft]),
-	Pid2 = spawn(mergesort, p_ms, [self(), Lright]),
+	% Pid1 = spawn(msort, p_ms, [self(), Lleft]),
+	% Pid2 = spawn(msort, p_ms, [self(), Lright]),
+	Pid1 = pms(Lleft),
+	Pid2 = pms(Lright),
 	L1 = rcvp(Pid1),
 	L2 = rcvp(Pid2),
 	Pid ! {self(), merge(L1, L2)}.
