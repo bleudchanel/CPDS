@@ -1,0 +1,120 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\froman\fcharset0 Times-Roman;\f2\fnil\fcharset0 Menlo-Regular;
+}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red70\green137\blue204;\red23\green23\blue23;
+\red202\green202\blue202;\red67\green192\blue160;\red140\green211\blue254;\red212\green214\blue154;\red183\green111\blue179;
+\red167\green197\blue152;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;\cssrgb\c33725\c61176\c83922;\cssrgb\c11765\c11765\c11765;
+\cssrgb\c83137\c83137\c83137;\cssrgb\c30588\c78824\c69020;\cssrgb\c61176\c86275\c99608;\cssrgb\c86275\c86275\c66667;\cssrgb\c77255\c52549\c75294;
+\cssrgb\c70980\c80784\c65882;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 MY_SERVER can receive the same action call from two actors a.b.\
+CALL triggers SERVICE\
+SERVICE receives the same action answer from two actors a.b. that trigger MY_SERVER\
+answer -> call -> service OR call -> service -> answer\
+\
+The composite OTHER_SERVER replaces the actions of SERVER: \{a.b\}.call / request and \
+\{a,b\}.answer/reply\
+\
+MY_SERVER follows this sequence = \{a.b\}.call -> service -> \{a.b\}.answer -> \{a.b\}.call\
+\
+With the composition and the relabeling: OTHER_SERVER makes server follow the sequence:\
+\{a.b\}.call -> service -> \{a.b\}.answer -> \{a.b\}.call\
+\
+Extension of the server\
+Due to process labeling, the actions call and answer are mutually exclusive, service must be preceded by either of \{a.b\}.call, and followed by either \{a.b\}.answer. This condition is not broken.\
+\
+property SAFE = (a.call -> a.answer -> SAFE | b.call -> b.answer -> SAFE).\
+\
+About BOB_CALL\
+\
+\pard\pardeftab720\sl300\sa240\partightenfactor0
+
+\f1\fs26\fsmilli13333 \cf2 \expnd0\expndtw0\kerning0
+||GREEDY_ALICE = CLIENT_SERVER_EXT << \{a.call\}. 
+\fs24 \
+\pard\pardeftab720\sl300\partightenfactor0
+
+\fs26\fsmilli13333 \cf2 progress BOB_CALL = \{bob.call\}\
+\pard\pardeftab720\sl300\sa240\partightenfactor0
+
+\fs24 \cf2 \
+The progress property assures that in an infinite time of executions of BOB_CALL, bob.call will happen infinite times, so it must happen. Although CLIENT_SERVER_EXT gives High priority to a.call, bob.call (or b.call) will still happen, so there must be no problem.\
+\
+\pard\pardeftab720\sl360\partightenfactor0
+
+\f2 \cf3 \cb4 \outl0\strokewidth0 \strokec3 public\cf5 \strokec5  \cf3 \strokec3 class\cf5 \strokec5  \cf6 \strokec6 OneBub\cf5 \strokec5  \{\cb1 \
+\cb4   \cf6 \strokec6 Object\cf5 \strokec5  \cf7 \strokec7 slot\cf5 \strokec5  = \cf3 \strokec3 null\cf5 \strokec5 ;\cb1 \
+\
+\cb4   \cf3 \strokec3 public\cf5 \strokec5  \cf8 \strokec8 OneBub\cf5 \strokec5 ()\{\cb1 \
+\
+\cb4   \}\cb1 \
+\
+\cb4   \cf3 \strokec3 synchronized\cf5 \strokec5  \cf3 \strokec3 public\cf5 \strokec5  \cf6 \strokec6 void\cf5 \strokec5  \cf8 \strokec8 put\cf5 \strokec5 (\cf6 \strokec6 Object\cf5 \strokec5  \cf7 \strokec7 o\cf5 \strokec5 ) \cf3 \strokec3 throws\cf5 \strokec5  \cf6 \strokec6 InterruptedException\cf5 \strokec5 \{\cb1 \
+\cb4     \cf9 \strokec9 while\cf5 \strokec5  (slot != \cf3 \strokec3 null\cf5 \strokec5 )\{\cb1 \
+\cb4       \cf8 \strokec8 wait\cf5 \strokec5 ();\cb1 \
+\cb4     \}\cb1 \
+\cb4     slot = o;\cb1 \
+\cb4     \cf8 \strokec8 notifyAll\cf5 \strokec5 ();\cb1 \
+\cb4   \}\cb1 \
+\
+\cb4   \cf3 \strokec3 synchronized\cf5 \strokec5  \cf3 \strokec3 public\cf5 \strokec5  \cf6 \strokec6 void\cf5 \strokec5  \cf8 \strokec8 get\cf5 \strokec5 () \cf3 \strokec3 throws\cf5 \strokec5  \cf6 \strokec6 InterruptedException\cf5 \strokec5 \{\cb1 \
+\cb4     \cf9 \strokec9 while\cf5 \strokec5 (slot == \cf3 \strokec3 null\cf5 \strokec5 )\{\cb1 \
+\cb4       \cf8 \strokec8 wait\cf5 \strokec5 ();\cb1 \
+\cb4     \}\cb1 \
+\cb4     slot = \cf3 \strokec3 null\cf5 \strokec5 ;\cb1 \
+\cb4     \cf8 \strokec8 notifyAll\cf5 \strokec5 ();\cb1 \
+\cb4   \}\cb1 \
+\cb4 \}\cb1 \
+\pard\pardeftab720\sl300\sa240\partightenfactor0
+
+\f1 \cf2 \outl0\strokewidth0 \
+\
+Intersection(L1,L2) -> [ X || X <- L1, lists:member(X,L1), lists:member(X,L2)]\
+Parallel dot Product:\
+\pard\pardeftab720\sl360\partightenfactor0
+
+\f2 \cf9 \cb4 \outl0\strokewidth0 \strokec9 module\cf5 \strokec5 (\cf6 \strokec6 dot_product\cf5 \strokec5 ).\cb1 \
+\cb4 -\cf9 \strokec9 compile\cf5 \strokec5 (export_all).\cb1 \
+\
+\cf8 \cb4 \strokec8 sep\cf5 \strokec5 (\cf7 \strokec7 L\cf5 \strokec5 , \cf10 \strokec10 0\cf5 \strokec5 ) -> \{[], \cf7 \strokec7 L\cf5 \strokec5 \};\cb1 \
+\cf8 \cb4 \strokec8 sep\cf5 \strokec5 ([\cf7 \strokec7 H\cf5 \strokec5 |\cf7 \strokec7 T\cf5 \strokec5 ], \cf7 \strokec7 N\cf5 \strokec5 ) -> \cb1 \
+\cb4 \'a0\'a0\{\cf7 \strokec7 Lleft\cf5 \strokec5 , \cf7 \strokec7 Lright\cf5 \strokec5 \} = \cf8 \strokec8 sep\cf5 \strokec5 (\cf7 \strokec7 T\cf5 \strokec5 , \cf7 \strokec7 N\cf5 \strokec5 -\cf10 \strokec10 1\cf5 \strokec5 ),\cb1 \
+\cb4 \'a0\'a0\{[\cf7 \strokec7 H\cf5 \strokec5 |\cf7 \strokec7 Lleft\cf5 \strokec5 ], \cf7 \strokec7 Lright\cf5 \strokec5 \}.\cb1 \
+\
+\cf8 \cb4 \strokec8 dot_product\cf5 \strokec5 ([\cf7 \strokec7 X1\cf5 \strokec5 ], [\cf7 \strokec7 X2\cf5 \strokec5 ]) -> \cf7 \strokec7 X1\cf5 \strokec5  * \cf7 \strokec7 X2\cf5 \strokec5 ;\cb1 \
+\cf8 \cb4 \strokec8 dot_product\cf5 \strokec5 (\cf7 \strokec7 L1\cf5 \strokec5 , \cf7 \strokec7 L2\cf5 \strokec5 ) ->\cb1 \
+\cb4 \'a0\'a0\{\cf7 \strokec7 L1left\cf5 \strokec5 , \cf7 \strokec7 L1right\cf5 \strokec5 \} = \cf8 \strokec8 sep\cf5 \strokec5 (\cf7 \strokec7 L1\cf5 \strokec5 , \cf8 \strokec8 length\cf5 \strokec5 (\cf7 \strokec7 L1\cf5 \strokec5 ) div \cf10 \strokec10 2\cf5 \strokec5 ),\cb1 \
+\cb4 \'a0\'a0\{\cf7 \strokec7 L2left\cf5 \strokec5 , \cf7 \strokec7 L2right\cf5 \strokec5 \} = \cf8 \strokec8 sep\cf5 \strokec5 (\cf7 \strokec7 L2\cf5 \strokec5 , \cf8 \strokec8 length\cf5 \strokec5 (\cf7 \strokec7 L2\cf5 \strokec5 ) div \cf10 \strokec10 2\cf5 \strokec5 ),\cb1 \
+\cb4 \'a0\'a0\cf8 \strokec8 dot_product\cf5 \strokec5 (\cf7 \strokec7 L1left\cf5 \strokec5 , \cf7 \strokec7 L2left\cf5 \strokec5 ) + \cf8 \strokec8 dot_product\cf5 \strokec5 (\cf7 \strokec7 L1right\cf5 \strokec5 , \cf7 \strokec7 L2right\cf5 \strokec5 ).\cb1 \
+\
+\cf8 \cb4 \strokec8 rcv\cf5 \strokec5 (\cf7 \strokec7 Pid\cf5 \strokec5 ) ->\cb1 \
+\cb4 \'a0\'a0\cf9 \strokec9 receive\cf5 \cb1 \strokec5 \
+\cb4 \'a0\'a0\'a0\'a0\{\cf7 \strokec7 Pid\cf5 \strokec5 , \cf7 \strokec7 X\cf5 \strokec5 \} -> \cf7 \strokec7 X\cf5 \cb1 \strokec5 \
+\cb4 \'a0\'a0\cf9 \strokec9 end\cf5 \strokec5 .\cb1 \
+\cf8 \cb4 \strokec8 parallel_dot_product\cf5 \strokec5 (\cf7 \strokec7 L1\cf5 \strokec5 , \cf7 \strokec7 L2\cf5 \strokec5 ) -> \cb1 \
+\cb4 \'a0\'a0\cf7 \strokec7 Pid\cf5 \strokec5  = \cf8 \strokec8 spawn\cf5 \strokec5 (?\cf8 \strokec8 MODULE\cf5 \strokec5 , p_dot_product, [\cf8 \strokec8 self\cf5 \strokec5 (), \cf7 \strokec7 L1\cf5 \strokec5 , \cf7 \strokec7 L2\cf5 \strokec5 ]),\cb1 \
+\cb4 \'a0\'a0\cf8 \strokec8 rcv\cf5 \strokec5 (\cf7 \strokec7 Pid\cf5 \strokec5 ).\cb1 \
+\
+\cf8 \cb4 \strokec8 p_dot_product\cf5 \strokec5 (\cf7 \strokec7 Pid\cf5 \strokec5 , \cf7 \strokec7 L1\cf5 \strokec5 , \cf7 \strokec7 L2\cf5 \strokec5 ) \cb1 \
+\cb4 \'a0\'a0\cf9 \strokec9 when\cf5 \strokec5  (\cf8 \strokec8 length\cf5 \strokec5 (\cf7 \strokec7 L1\cf5 \strokec5 ) < \cf10 \strokec10 3\cf5 \strokec5 ) -> \cf7 \strokec7 Pid\cf5 \strokec5  ! \{\cf8 \strokec8 self\cf5 \strokec5 (), \cf8 \strokec8 dot_product\cf5 \strokec5 (\cf7 \strokec7 L1\cf5 \strokec5 , \cf7 \strokec7 L2\cf5 \strokec5 )\};\cb1 \
+\
+\cf8 \cb4 \strokec8 p_dot_product\cf5 \strokec5 (\cf7 \strokec7 Pid\cf5 \strokec5 , \cf7 \strokec7 L1\cf5 \strokec5 , \cf7 \strokec7 L2\cf5 \strokec5 ) ->\cb1 \
+\cb4 \'a0\'a0\{\cf7 \strokec7 L1left\cf5 \strokec5 , \cf7 \strokec7 L1right\cf5 \strokec5 \} = \cf8 \strokec8 sep\cf5 \strokec5 (\cf7 \strokec7 L1\cf5 \strokec5 , \cf8 \strokec8 length\cf5 \strokec5 (\cf7 \strokec7 L1\cf5 \strokec5 ) div \cf10 \strokec10 2\cf5 \strokec5 ),\cb1 \
+\cb4 \'a0\'a0\{\cf7 \strokec7 L2left\cf5 \strokec5 , \cf7 \strokec7 L2right\cf5 \strokec5 \} = \cf8 \strokec8 sep\cf5 \strokec5 (\cf7 \strokec7 L2\cf5 \strokec5 , \cf8 \strokec8 length\cf5 \strokec5 (\cf7 \strokec7 L2\cf5 \strokec5 ) div \cf10 \strokec10 2\cf5 \strokec5 ),\cb1 \
+\cb4 \'a0\'a0\cb1 \
+\cb4 \'a0\'a0\cf7 \strokec7 Pid1\cf5 \strokec5  = \cf8 \strokec8 spawn\cf5 \strokec5 (?\cf8 \strokec8 MODULE\cf5 \strokec5 , p_dot_product, [\cf8 \strokec8 self\cf5 \strokec5 (), \cf7 \strokec7 L1left\cf5 \strokec5 , \cf7 \strokec7 L2left\cf5 \strokec5 ]),\cb1 \
+\cb4 \'a0\'a0\cf7 \strokec7 Pid2\cf5 \strokec5  = \cf8 \strokec8 spawn\cf5 \strokec5 (?\cf8 \strokec8 MODULE\cf5 \strokec5 , p_dot_product, [\cf8 \strokec8 self\cf5 \strokec5 (), \cf7 \strokec7 L1right\cf5 \strokec5 , \cf7 \strokec7 L2right\cf5 \strokec5 ]),\cb1 \
+\
+\cb4 \'a0\'a0\cf7 \strokec7 X1\cf5 \strokec5  = \cf8 \strokec8 rcv\cf5 \strokec5 (\cf7 \strokec7 Pid1\cf5 \strokec5 ),\cb1 \
+\cb4 \'a0\'a0\cf7 \strokec7 X2\cf5 \strokec5  = \cf8 \strokec8 rcv\cf5 \strokec5 (\cf7 \strokec7 Pid2\cf5 \strokec5 ),\cb1 \
+\
+\cb4 \'a0\'a0\cf7 \strokec7 Pid\cf5 \strokec5  ! \{\cf8 \strokec8 self\cf5 \strokec5 (), \cf7 \strokec7 X1\cf5 \strokec5  + \cf7 \strokec7 X2\cf5 \strokec5 \}.\cb1 \
+\
+\pard\pardeftab720\sl300\sa240\partightenfactor0
+
+\f1 \cf2 \outl0\strokewidth0 \
+\
+}
